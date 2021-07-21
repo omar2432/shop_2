@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/screens/product_detail_screen.dart';
+import 'package:flutter_complete_guide/screens/products_toDeliver_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/orders_screen.dart';
@@ -34,6 +36,15 @@ class AppDrawer extends StatelessWidget {
           ),
           Divider(),
           ListTile(
+            leading: Icon(Icons.delivery_dining),
+            title: Text('Products To Deliver'),
+            onTap: () {
+              Navigator.of(context)
+                  .pushReplacementNamed(ProductsToDeliver.routeName);
+            },
+          ),
+          Divider(),
+          ListTile(
             leading: Icon(Icons.edit),
             title: Text('Manage Products'),
             onTap: () {
@@ -48,7 +59,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).pushReplacementNamed('/');
-              
+
               // Navigator.of(context)
               //     .pushReplacementNamed(UserProductsScreen.routeName);
               Provider.of<Auth>(context, listen: false).logout();

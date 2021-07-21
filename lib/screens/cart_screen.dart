@@ -132,7 +132,7 @@ class _OrderButtonState extends State<OrderButton> {
                           });
 
                           Provider.of<Orders>(context, listen: false)
-                              .addingOrderToDeliver(
+                              .addingOrderToDeliverByProduct(
                                   widget.cart.items.values.toList(),
                                   widget.cart.totalAmount,
                                   addressController.text,

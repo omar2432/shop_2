@@ -95,6 +95,7 @@ class Products with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(Product(
           id: prodId,
+          creatorId: prodData['creatorId'],
           category: prodData['category'],
           title: prodData['title'],
           description: prodData['description'],
@@ -128,6 +129,7 @@ class Products with ChangeNotifier {
       );
       final newProduct = Product(
         title: product.title,
+        creatorId: userId,
         category: product.category,
         description: product.description,
         price: product.price,

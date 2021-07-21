@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 class Product with ChangeNotifier {
   final String id;
+  final String creatorId;
   final String title;
   final String description;
   final double price;
@@ -16,6 +17,7 @@ class Product with ChangeNotifier {
 
   Product({
     @required this.id,
+    @required this.creatorId,
     @required this.title,
     @required this.description,
     @required this.price,

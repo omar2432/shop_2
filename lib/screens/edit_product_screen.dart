@@ -20,6 +20,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _form = GlobalKey<FormState>();
   var _editedProduct = Product(
     id: null,
+    creatorId: '',
     title: '',
     category: 'other',
     price: 0,
@@ -27,6 +28,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     imageUrl: '',
   );
   var _initValues = {
+    'creatorId': '',
     'title': '',
     'category': '',
     'description': '',
@@ -50,6 +52,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         _editedProduct =
             Provider.of<Products>(context, listen: false).findById(productId);
         _initValues = {
+          'creatorId': _editedProduct.creatorId,
           'title': _editedProduct.title,
           'description': _editedProduct.description,
           'price': _editedProduct.price.toString(),
@@ -174,6 +177,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                       onSaved: (value) {
                         _editedProduct = Product(
+                            creatorId: _editedProduct.creatorId,
                             title: value,
                             category: _editedProduct.category,
                             price: _editedProduct.price,
@@ -216,6 +220,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                       onSaved: (value) {
                         _editedProduct = Product(
+                            creatorId: _editedProduct.creatorId,
                             title: _editedProduct.title,
                             category: value,
                             price: _editedProduct.price,
@@ -249,6 +254,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                       onSaved: (value) {
                         _editedProduct = Product(
+                            creatorId: _editedProduct.creatorId,
                             title: _editedProduct.title,
                             category: _editedProduct.category,
                             price: double.parse(value),
@@ -275,6 +281,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                       onSaved: (value) {
                         _editedProduct = Product(
+                          creatorId: _editedProduct.creatorId,
                           title: _editedProduct.title,
                           category: _editedProduct.category,
                           price: _editedProduct.price,
@@ -337,6 +344,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             },
                             onSaved: (value) {
                               _editedProduct = Product(
+                                creatorId: _editedProduct.creatorId,
                                 title: _editedProduct.title,
                                 category: _editedProduct.category,
                                 price: _editedProduct.price,
