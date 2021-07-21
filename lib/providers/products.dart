@@ -58,6 +58,10 @@ class Products with ChangeNotifier {
     return _items.where((prodItem) => prodItem.isFavorite).toList();
   }
 
+  List<Product> getcategoryItems(String cat) {
+    return _items.where((prodItem) => prodItem.category == cat).toList();
+  }
+
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
@@ -91,6 +95,7 @@ class Products with ChangeNotifier {
       extractedData.forEach((prodId, prodData) {
         loadedProducts.add(Product(
           id: prodId,
+          category: prodData['category'],
           title: prodData['title'],
           description: prodData['description'],
           price: prodData['price'],
@@ -114,6 +119,7 @@ class Products with ChangeNotifier {
         url,
         body: json.encode({
           'title': product.title,
+          'category': product.category,
           'description': product.description,
           'imageUrl': product.imageUrl,
           'price': product.price,
@@ -122,6 +128,7 @@ class Products with ChangeNotifier {
       );
       final newProduct = Product(
         title: product.title,
+        category: product.category,
         description: product.description,
         price: product.price,
         imageUrl: product.imageUrl,
@@ -144,6 +151,7 @@ class Products with ChangeNotifier {
       await http.patch(url,
           body: json.encode({
             'title': newProduct.title,
+            'category': newProduct.category,
             'description': newProduct.description,
             'imageUrl': newProduct.imageUrl,
             'price': newProduct.price

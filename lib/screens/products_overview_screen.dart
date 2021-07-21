@@ -11,6 +11,12 @@ import '../providers/products.dart';
 enum FilterOptions {
   Favorites,
   All,
+  food,
+  beverage,
+  clothes,
+  sports,
+  pets,
+  other,
 }
 
 class ProductsOverviewScreen extends StatefulWidget {
@@ -19,7 +25,9 @@ class ProductsOverviewScreen extends StatefulWidget {
 }
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
-  var _showOnlyFavorites = false;
+  // var _showOnlyFavorites = false;
+
+  var filter = 'all';
   var _isInit = true;
   var _isLoading = false;
 
@@ -57,10 +65,38 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           PopupMenuButton(
             onSelected: (FilterOptions selectedValue) {
               setState(() {
-                if (selectedValue == FilterOptions.Favorites) {
-                  _showOnlyFavorites = true;
-                } else {
-                  _showOnlyFavorites = false;
+                switch (selectedValue) {
+                  case FilterOptions.All:
+                    filter = 'all';
+                    break;
+
+                  case FilterOptions.Favorites:
+                    filter = 'favorites';
+                    break;
+
+                  case FilterOptions.food:
+                    filter = 'food';
+                    break;
+
+                  case FilterOptions.beverage:
+                    filter = 'beverage';
+                    break;
+
+                  case FilterOptions.clothes:
+                    filter = 'clothes';
+                    break;
+
+                  case FilterOptions.pets:
+                    filter = 'pets';
+                    break;
+
+                  case FilterOptions.sports:
+                    filter = 'sports';
+                    break;
+
+                  case FilterOptions.other:
+                    filter = 'other';
+                    break;
                 }
               });
             },
@@ -68,21 +104,45 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               Icons.more_vert,
             ),
             itemBuilder: (_) => [
-                  PopupMenuItem(
-                    child: Text('Only Favorites'),
-                    value: FilterOptions.Favorites,
-                  ),
-                  PopupMenuItem(
-                    child: Text('Show All'),
-                    value: FilterOptions.All,
-                  ),
-                ],
+              PopupMenuItem(
+                child: Text('Only Favorites'),
+                value: FilterOptions.Favorites,
+              ),
+              PopupMenuItem(
+                child: Text('Show All'),
+                value: FilterOptions.All,
+              ),
+              PopupMenuItem(
+                child: Text('Food'),
+                value: FilterOptions.food,
+              ),
+              PopupMenuItem(
+                child: Text('Beverage'),
+                value: FilterOptions.beverage,
+              ),
+              PopupMenuItem(
+                child: Text('Clothes'),
+                value: FilterOptions.clothes,
+              ),
+              PopupMenuItem(
+                child: Text('Sports'),
+                value: FilterOptions.sports,
+              ),
+              PopupMenuItem(
+                child: Text('Pets'),
+                value: FilterOptions.pets,
+              ),
+              PopupMenuItem(
+                child: Text('other'),
+                value: FilterOptions.other,
+              ),
+            ],
           ),
           Consumer<Cart>(
             builder: (_, cart, ch) => Badge(
-                  child: ch,
-                  value: cart.itemCount.toString(),
-                ),
+              child: ch,
+              value: cart.itemCount.toString(),
+            ),
             child: IconButton(
               icon: Icon(
                 Icons.shopping_cart,
@@ -99,7 +159,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : ProductsGrid(_showOnlyFavorites),
+          : ProductsGrid(filter),
     );
   }
 }

@@ -3,12 +3,15 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
+//enum Catgory { sports, clothes, food, beverages, other }
+
 class Product with ChangeNotifier {
   final String id;
   final String title;
   final String description;
   final double price;
   final String imageUrl;
+  final String category;
   bool isFavorite;
 
   Product({
@@ -17,6 +20,7 @@ class Product with ChangeNotifier {
     @required this.description,
     @required this.price,
     @required this.imageUrl,
+    @required this.category,
     this.isFavorite = false,
   });
 

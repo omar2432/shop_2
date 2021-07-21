@@ -12,6 +12,7 @@ class EditProductScreen extends StatefulWidget {
 }
 
 class _EditProductScreenState extends State<EditProductScreen> {
+  final _categoryFocusNode = FocusNode();
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
@@ -20,12 +21,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
   var _editedProduct = Product(
     id: null,
     title: '',
+    category: 'other',
     price: 0,
     description: '',
     imageUrl: '',
   );
   var _initValues = {
     'title': '',
+    'category': '',
     'description': '',
     'price': '',
     'imageUrl': '',
@@ -50,6 +53,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           'title': _editedProduct.title,
           'description': _editedProduct.description,
           'price': _editedProduct.price.toString(),
+          'category': _editedProduct.category,
           // 'imageUrl': _editedProduct.imageUrl,
           'imageUrl': '',
         };
@@ -86,6 +90,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   Future<void> _saveForm() async {
     final isValid = _form.currentState.validate();
     if (!isValid) {
+      print('not validdd');
       return;
     }
     _form.currentState.save();
@@ -93,10 +98,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
       _isLoading = true;
     });
     if (_editedProduct.id != null) {
+      print('updating prod');
       await Provider.of<Products>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
     } else {
       try {
+        print('adding prod');
         await Provider.of<Products>(context, listen: false)
             .addProduct(_editedProduct);
       } catch (error) {
@@ -157,7 +164,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       decoration: InputDecoration(labelText: 'Title'),
                       textInputAction: TextInputAction.next,
                       onFieldSubmitted: (_) {
-                        FocusScope.of(context).requestFocus(_priceFocusNode);
+                        FocusScope.of(context).requestFocus(_categoryFocusNode);
                       },
                       validator: (value) {
                         if (value.isEmpty) {
@@ -168,6 +175,49 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       onSaved: (value) {
                         _editedProduct = Product(
                             title: value,
+                            category: _editedProduct.category,
+                            price: _editedProduct.price,
+                            description: _editedProduct.description,
+                            imageUrl: _editedProduct.imageUrl,
+                            id: _editedProduct.id,
+                            isFavorite: _editedProduct.isFavorite);
+                      },
+                    ),
+                    DropdownButtonFormField(
+                      // isExpanded: true,
+                      // value: Catgory,
+                      decoration: InputDecoration(
+                        labelText: 'Choose Category',
+                      ),
+                      onChanged: (_) {
+                        setState(() {});
+                      },
+                      // value: Catgory.other,
+                      items: [
+                        'food',
+                        'beverage',
+                        'clothes',
+                        'sports',
+                        'pets',
+                        'other'
+                      ].map((value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      focusNode: _categoryFocusNode,
+                      validator: (value) {
+                        // ********
+                        if (value.isEmpty) {
+                          return 'Please provide a value.';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _editedProduct = Product(
+                            title: _editedProduct.title,
+                            category: value,
                             price: _editedProduct.price,
                             description: _editedProduct.description,
                             imageUrl: _editedProduct.imageUrl,
@@ -200,6 +250,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       onSaved: (value) {
                         _editedProduct = Product(
                             title: _editedProduct.title,
+                            category: _editedProduct.category,
                             price: double.parse(value),
                             description: _editedProduct.description,
                             imageUrl: _editedProduct.imageUrl,
@@ -225,6 +276,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       onSaved: (value) {
                         _editedProduct = Product(
                           title: _editedProduct.title,
+                          category: _editedProduct.category,
                           price: _editedProduct.price,
                           description: value,
                           imageUrl: _editedProduct.imageUrl,
@@ -286,6 +338,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                             onSaved: (value) {
                               _editedProduct = Product(
                                 title: _editedProduct.title,
+                                category: _editedProduct.category,
                                 price: _editedProduct.price,
                                 description: _editedProduct.description,
                                 imageUrl: value,
