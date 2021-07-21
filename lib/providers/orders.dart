@@ -92,4 +92,28 @@ class Orders with ChangeNotifier {
     );
     notifyListeners();
   }
+
+  Future<void> addingOrderToDeliver(List<CartItem> cartProducts, double total,
+      String address, String phone) async {
+    final url =
+        'https://fireeats-434d3.firebaseio.com/deliver/$userId.json?auth=$authToken';
+    final timestamp = DateTime.now();
+    final response = await http.post(
+      url,
+      body: json.encode({
+        'address': address,
+        'phone': phone,
+        'amount': total,
+        'dateTime': timestamp.toIso8601String(),
+        'products': cartProducts
+            .map((cp) => {
+                  'id': cp.id,
+                  'title': cp.title,
+                  'quantity': cp.quantity,
+                  'price': cp.price,
+                })
+            .toList(),
+      }),
+    );
+  }
 }

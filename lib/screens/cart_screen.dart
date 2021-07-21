@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../providers/cart.dart' show Cart;
 import '../widgets/cart_item.dart';
@@ -77,27 +78,78 @@ class OrderButton extends StatefulWidget {
 
 class _OrderButtonState extends State<OrderButton> {
   var _isLoading = false;
+  final phoneNumberController = TextEditingController();
+  final addressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      child: _isLoading ? CircularProgressIndicator() : Text('ORDER NOW'),
-      onPressed: (widget.cart.totalAmount <= 0 || _isLoading)
-          ? null
-          : () async {
-              setState(() {
-                _isLoading = true;
-              });
-              await Provider.of<Orders>(context, listen: false).addOrder(
-                widget.cart.items.values.toList(),
-                widget.cart.totalAmount,
-              );
-              setState(() {
-                _isLoading = false;
-              });
-              widget.cart.clear();
-            },
-      // textColor: Theme.of(context).primaryColor,
-    );
+        child: _isLoading ? CircularProgressIndicator() : Text('ORDER NOW'),
+        onPressed: () {
+          (widget.cart.totalAmount <= 0 || _isLoading)
+              ? null
+              : Alert(
+                  context: context,
+                  title: "Delivery Data",
+                  content: Column(
+                    children: <Widget>[
+                      TextField(
+                        controller: phoneNumberController,
+                        decoration: InputDecoration(
+                          icon: Icon(Icons.account_circle),
+                          labelText: 'Phone Number',
+                        ),
+                      ),
+                      TextField(
+                        controller: addressController,
+                        decoration: InputDecoration(
+                          icon: Icon(Icons.home),
+                          labelText: 'Address',
+                        ),
+                      ),
+                      Text(
+                        'Payment Method: Cash on Delivery',
+                        style: TextStyle(fontSize: 13),
+                      ),
+                    ],
+                  ),
+                  buttons: [
+                      DialogButton(
+                        onPressed: () async {
+                          Navigator.pop(context);
+
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          await Provider.of<Orders>(context, listen: false)
+                              .addOrder(
+                            widget.cart.items.values.toList(),
+                            widget.cart.totalAmount,
+                          );
+
+                          setState(() {
+                            _isLoading = false;
+                          });
+
+                          Provider.of<Orders>(context, listen: false)
+                              .addingOrderToDeliver(
+                                  widget.cart.items.values.toList(),
+                                  widget.cart.totalAmount,
+                                  addressController.text,
+                                  phoneNumberController.text);
+
+                          widget.cart.clear();
+
+                          // print(phoneNumberController.text);
+
+                          // textColor: Theme.of(context).primaryColor,
+                        },
+                        child: Text(
+                          "Confirm Purchase",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                      )
+                    ]).show();
+        });
   }
 }
