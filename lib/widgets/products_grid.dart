@@ -13,15 +13,21 @@ class ProductsGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final productsData = Provider.of<Products>(context);
     var products = productsData.items;
+    var featuredproducts = productsData.featuredItems;
     //final products = showFavs ? productsData.favoriteItems : productsData.items;
 
     switch (filter) {
-      case 'all':
+      case 'All Products':
         products = productsData.items;
         break;
 
       case 'favorites':
         products = productsData.favoriteItems;
+        break;
+
+      case 'featured':
+        products = featuredproducts; // heree
+        //  print('featuredproducts   heree');
         break;
 
       default:

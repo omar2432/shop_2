@@ -16,6 +16,7 @@ enum FilterOptions {
   clothes,
   sports,
   pets,
+  featured,
   other,
 }
 
@@ -26,8 +27,8 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   // var _showOnlyFavorites = false;
-
-  var filter = 'all';
+  var myshop = 'Shop';
+  var filter = 'All Products';
   var _isInit = true;
   var _isLoading = false;
 
@@ -44,8 +45,11 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   void didChangeDependencies() {
     if (_isInit) {
       setState(() {
+        filter = 'featured';
+        //  myshop = 'featured products';
         _isLoading = true;
       });
+      Provider.of<Products>(context).fetchAndSetFeaturedProducts();
       Provider.of<Products>(context).fetchAndSetProducts().then((_) {
         setState(() {
           _isLoading = false;
@@ -58,16 +62,17 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    myshop = filter;
     return Scaffold(
       appBar: AppBar(
-        title: Text('MyShop'),
+        title: Text(myshop),
         actions: <Widget>[
           PopupMenuButton(
             onSelected: (FilterOptions selectedValue) {
               setState(() {
                 switch (selectedValue) {
                   case FilterOptions.All:
-                    filter = 'all';
+                    filter = 'All Products';
                     break;
 
                   case FilterOptions.Favorites:
@@ -94,6 +99,10 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                     filter = 'sports';
                     break;
 
+                  case FilterOptions.featured:
+                    filter = 'featured';
+                    break;
+
                   case FilterOptions.other:
                     filter = 'other';
                     break;
@@ -104,6 +113,10 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
               Icons.more_vert,
             ),
             itemBuilder: (_) => [
+              PopupMenuItem(
+                child: Text('Featured'),
+                value: FilterOptions.featured,
+              ),
               PopupMenuItem(
                 child: Text('Only Favorites'),
                 value: FilterOptions.Favorites,
@@ -159,7 +172,36 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : ProductsGrid(filter),
+          : //Expanded(
+          //width: double.infinity,
+          //height: double.infinity,
+          //child: new SingleChildScrollView(
+          // child: Column(
+          //  children: <Widget>[
+          ProductsGrid(filter),
+      //     ProductsGrid('featured'),
+      //    ],
+      //    ),
+      //    ),
+      //)
+
+      /*ListView(
+                children: [
+                  */
+      /*    Expanded(
+                      child: Text(
+                    "Featured Products:",
+                    style: TextStyle(fontSize: 25),
+                  )),
+*/
+      //  Divider(),
+      // ProductsGrid('featured'),
+      /*  Divider(
+                    color: Colors.red,
+                  ),   */
+      // ProductsGrid(filter),
+      //     ],
+      //   )
     );
   }
 }
