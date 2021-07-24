@@ -75,6 +75,7 @@ class Products with ChangeNotifier {
           isFavorite:
               favoriteData == null ? false : favoriteData[prodId] ?? false,
           imageUrl: prodData['imageUrl'],
+          isverified: prodData['isverified'],
         ));
       });
       _items = loadedProducts;
@@ -109,6 +110,7 @@ class Products with ChangeNotifier {
           isFavorite:
               favoriteData == null ? false : favoriteData[prodId] ?? false,
           imageUrl: prodData['imageUrl'],
+          isverified: 'false', //change Latter
         ));
       });
       _featuredItems = loadedProducts;
@@ -133,6 +135,7 @@ class Products with ChangeNotifier {
           'imageUrl': product.imageUrl,
           'price': product.price,
           'creatorId': userId,
+          'isverified': 'false',
         }),
       );
       final newProduct = Product(
@@ -142,6 +145,7 @@ class Products with ChangeNotifier {
         description: product.description,
         price: product.price,
         imageUrl: product.imageUrl,
+        isverified: 'false',
         id: json.decode(response.body)['name'],
       );
       _items.add(newProduct);

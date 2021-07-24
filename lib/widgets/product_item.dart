@@ -15,12 +15,21 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String ver = Provider.of<Product>(context, listen: false).isverified;
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
     final authData = Provider.of<Auth>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
+        header: GridTileBar(
+          trailing: Icon(
+            ver == 'true'
+                ? IconData(0xe699, fontFamily: 'MaterialIcons')
+                : null,
+            color: Colors.blue.shade400,
+          ),
+        ),
         child: GestureDetector(
           onTap: () {
             Navigator.of(context).pushNamed(

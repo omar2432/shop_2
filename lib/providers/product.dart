@@ -13,6 +13,7 @@ class Product with ChangeNotifier {
   final double price;
   final String imageUrl;
   final String category;
+  String isverified;
   bool isFavorite;
 
   Product({
@@ -23,6 +24,7 @@ class Product with ChangeNotifier {
     @required this.price,
     @required this.imageUrl,
     @required this.category,
+    @required this.isverified,
     this.isFavorite = false,
   });
 
